@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import MovieList from '../components/MovieList'
 import '../styles/home.css'
 
 const Home = () => {
@@ -14,6 +15,9 @@ const Home = () => {
           <button className="cta-button">Купить билет</button>
         </div>
       </section>
+
+      {/* Новый блок со списком фильмов */}
+      <MovieList />
 
       <section className="features">
         <h2>Почему выбирают нас</h2>
@@ -38,14 +42,6 @@ const Home = () => {
             <h3>Удобство</h3>
             <p>Быстрый онлайн-заказ билетов</p>
           </div>
-        </div>
-      </section>
-
-      <section className="coming-soon">
-        <h2>Скоро в кино</h2>
-        <div className="movies-preview">
-          <p>Здесь будут отображаться предстоящие премьеры</p>
-          <p className="coming-soon-text">Скоро появится афиша фильмов! 🎥</p>
         </div>
       </section>
     </main>
