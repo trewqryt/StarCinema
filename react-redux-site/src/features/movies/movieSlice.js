@@ -1,18 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  movies: [
-    { id: 1, title: 'Inception', year: 2010, genre: 'Sci-Fi' },
-    { id: 2, title: 'The Matrix', year: 1999, genre: 'Action' },
-    { id: 3, title: 'Interstellar', year: 2014, genre: 'Adventure' },
-    { id: 4, title: 'Pulp Fiction', year: 1994, genre: 'Crime' },
-  ],
-};
+  movies: [],
+  currentMovie: null,
+  loading: false,
+  error: null,
+}
 
-const movieSlice = createSlice({
+export const movieSlice = createSlice({
   name: 'movies',
   initialState,
-  reducers: {},
-});
+  reducers: {
 
-export default movieSlice.reducer;
+    setMovies: (state, action) => {
+      state.movies = action.payload
+    },
+    setCurrentMovie: (state, action) => {
+      state.currentMovie = action.payload
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload
+    },
+    setError: (state, action) => {
+      state.error = action.payload
+    },
+  },
+})
+
+export const { setMovies, setCurrentMovie, setLoading, setError } = movieSlice.actions
+export default movieSlice.reducer

@@ -1,0 +1,114 @@
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+  }
+  
+  .header.light-theme {
+    background-color: var(--light-header);
+    border-bottom: 1px solid var(--light-border);
+  }
+  
+  .header.dark-theme {
+    background-color: var(--dark-header);
+    border-bottom: 1px solid var(--dark-border);
+  }
+  
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo h1 {
+    font-size: 1.8rem;
+    color: var(--primary);
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .logo h1:hover {
+    color: var(--primary-hover);
+  }
+  
+  .nav-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+  
+  .header.light-theme .nav-link {
+    color: var(--light-text);
+  }
+  
+  .header.dark-theme .nav-link {
+    color: var(--dark-text);
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--primary);
+    background-color: rgba(229, 9, 20, 0.1);
+  }
+  
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+  }
+  
+  .theme-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .login-btn:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  @media (max-width: 768px) {
+    .header-container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .nav-menu ul {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+  }
+  

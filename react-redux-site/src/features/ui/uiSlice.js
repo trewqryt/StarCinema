@@ -1,19 +1,18 @@
-// src/features/ui/uiSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   theme: 'light',
-};
+}
 
-const uiSlice = createSlice({
+export const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
     toggleTheme: (state) => {
-      state.theme = state.theme === 'light' ? 'dark' : 'light';
+      state.theme = state.theme === 'light' ? 'dark' : 'light'
     },
   },
-});
+})
 
-export const { toggleTheme } = uiSlice.actions;
-export default uiSlice.reducer;
+export const { toggleTheme } = uiSlice.actions
+export default uiSlice.reducer

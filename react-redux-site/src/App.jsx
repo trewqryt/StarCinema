@@ -1,29 +1,20 @@
-// src/App.jsx
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import Header from './components/Header';
-import Home from './pages/Home';
-import Footer from './components/Footer';
-
+import React from 'react'
+import { Provider } from 'react-redux'
+import { store } from './app/store'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import Home from './pages/Home'
 
 function App() {
-  const theme = useSelector((state) => state.ui.theme);
-
-  useEffect(() => {
-    document.body.className = theme;
-  }, [theme]);
-
   return (
-    <div>
-      <Header />
-      
-      <main>
+    <Provider store={store}>
+      <div className="app">
+        <Header />
         <Home />
-      </main>
-      
-      <Footer />
-    </div>
-  );
+        <Footer />
+      </div>
+    </Provider>
+  )
 }
 
-export default App;
+export default App
