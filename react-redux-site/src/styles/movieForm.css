@@ -1,0 +1,132 @@
+.movie-form {
+    padding: 2rem;
+  }
+  
+  .movie-form-title {
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 2px solid #334155;
+    padding-bottom: 1rem;
+  }
+  
+  .movie-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .movie-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .movie-form-full {
+    grid-column: span 2;
+  }
+  
+  .movie-form-group label {
+    color: #4fc3f7;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .movie-form-group input,
+  .movie-form-group textarea {
+    padding: 0.8rem 1rem;
+    border: 2px solid #334155;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+  
+  .movie-form-group input:focus,
+  .movie-form-group textarea:focus {
+    outline: none;
+    border-color: #4fc3f7;
+    box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+  }
+  
+  .movie-form-group input.error,
+  .movie-form-group textarea.error {
+    border-color: #f44336;
+  }
+  
+  .error-text {
+    color: #f44336;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+  
+  .movie-form-group input::placeholder,
+  .movie-form-group textarea::placeholder {
+    color: #64748b;
+  }
+  
+  .movie-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .movie-form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .movie-form-submit,
+  .movie-form-cancel {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .movie-form-submit {
+    background: linear-gradient(135deg, #4fc3f7, #0288d1);
+    color: white;
+  }
+  
+  .movie-form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(79, 195, 247, 0.4);
+  }
+  
+  .movie-form-cancel {
+    background: #334155;
+    color: white;
+  }
+  
+  .movie-form-cancel:hover {
+    background: #475569;
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 768px) {
+    .movie-form-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .movie-form-full {
+      grid-column: span 1;
+    }
+    
+    .movie-form {
+      padding: 1.5rem;
+    }
+    
+    .movie-form-actions {
+      flex-direction: column;
+    }
+  }

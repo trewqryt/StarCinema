@@ -8,7 +8,7 @@ const MovieDetail = ({ movie, onClose }) => {
       
       <div className="detail-header">
         <img 
-          src={movie.poster || `https://via.placeholder.com/200x300?text=${movie.title.charAt(0)}`} 
+          src={movie.poster} 
           alt={movie.title}
           className="detail-poster"
           onError={(e) => {
@@ -18,43 +18,42 @@ const MovieDetail = ({ movie, onClose }) => {
         />
         <div className="detail-title-section">
           <h2 className="detail-title">{movie.title}</h2>
-          <p className="detail-year">{movie.year || '2024'}</p>
+          <p className="detail-year">{movie.year}</p>
+          <span className="detail-rating">⭐ {movie.rating}</span>
         </div>
       </div>
 
       <div className="detail-info">
         <div className="info-row">
-          <span className="info-label">Рейтинг:</span>
-          <span className="info-value">⭐ {movie.rating || 'N/A'}</span>
+          <span className="info-label">Жанр</span>
+          <span className="info-value">{movie.genre}</span>
         </div>
         
         <div className="info-row">
-          <span className="info-label">Жанр:</span>
-          <span className="info-value">{movie.genre || 'Не указан'}</span>
+          <span className="info-label">Режиссер</span>
+          <span className="info-value">{movie.director}</span>
         </div>
         
         <div className="info-row">
-          <span className="info-label">Режиссер:</span>
-          <span className="info-value">{movie.director || 'Информация отсутствует'}</span>
+          <span className="info-label">В ролях</span>
+          <span className="info-value">{movie.actors}</span>
         </div>
         
         <div className="info-row">
-          <span className="info-label">В ролях:</span>
-          <span className="info-value">{movie.actors || 'Информация отсутствует'}</span>
+          <span className="info-label">Длительность</span>
+          <span className="info-value">{movie.runtime}</span>
         </div>
         
         <div className="info-row description">
-          <span className="info-label">Описание:</span>
-          <p className="info-value">{movie.description || movie.plot || 'Описание отсутствует'}</p>
-        </div>
-        
-        <div className="info-row">
-          <span className="info-label">Длительность:</span>
-          <span className="info-value">{movie.runtime || 'N/A'}</span>
+          <span className="info-label">О фильме</span>
+          <p className="info-value">{movie.description}</p>
         </div>
       </div>
 
-      <button className="buy-ticket-btn">Купить билет</button>
+      <div className="detail-actions">
+        <button className="buy-ticket-btn">Купить билет</button>
+        <button className="trailer-btn">Трейлер</button>
+      </div>
     </div>
   )
 }

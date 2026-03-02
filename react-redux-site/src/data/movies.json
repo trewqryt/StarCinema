@@ -1,0 +1,100 @@
+{
+    "movies": [
+      {
+        "id": 1,
+        "title": "Дюна: Часть вторая",
+        "year": 2024,
+        "rating": 8.9,
+        "genre": "Фантастика, Боевик",
+        "director": "Дени Вильнёв",
+        "actors": "Тимоти Шаламе, Зендея, Остин Батлер",
+        "description": "Пол Атрейдес объединяется с фрименами, чтобы отомстить заговорщикам, разрушившим его семью. Его ждет выбор между любовью и судьбой вселенной.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00NTc5LThlOGQtODhmNDI1NmY5YzAwXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg",
+        "runtime": "2ч 46мин"
+      },
+      {
+        "id": 2,
+        "title": "Оппенгеймер",
+        "year": 2023,
+        "rating": 8.5,
+        "genre": "Драма, Биография",
+        "director": "Кристофер Нолан",
+        "actors": "Киллиан Мёрфи, Эмили Блант, Мэтт Дэймон",
+        "description": "История жизни американского физика Роберта Оппенгеймера, создателя атомной бомбы.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg",
+        "runtime": "3ч"
+      },
+      {
+        "id": 3,
+        "title": "Барби",
+        "year": 2023,
+        "rating": 7.0,
+        "genre": "Комедия, Фэнтези",
+        "director": "Грета Гервиг",
+        "actors": "Марго Робби, Райан Гослинг",
+        "description": "Барби покидает идеальный Барбиленд и отправляется в реальный мир, чтобы найти свое счастье.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BNjU3N2QxNzYtMjk1NC00MTc4LTk1NTQtMmUxNTljM2I0NDA5XkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg",
+        "runtime": "1ч 54мин"
+      },
+      {
+        "id": 4,
+        "title": "Стражи Галактики. Часть 3",
+        "year": 2023,
+        "rating": 8.1,
+        "genre": "Фантастика, Боевик",
+        "director": "Джеймс Ганн",
+        "actors": "Крис Пратт, Зои Салдана, Дэйв Батиста",
+        "description": "Стражи Галактики отправляются на поиски Ракеты и сталкиваются с могущественной организацией.",
+        "poster": "https://ticketon.kz/media/upload/28008u55626_strazhigalaktiki3231655.jpg",
+        "runtime": "2ч 30мин"
+      },
+      {
+        "id": 5,
+        "title": "Человек-паук: Паутина вселенных",
+        "year": 2023,
+        "rating": 8.7,
+        "genre": "Мультфильм, Фантастика",
+        "director": "Жуакин Душ Сантуш",
+        "actors": "Шамеик Мур, Хейли Стайнфелд",
+        "description": "Майлз Моралес отправляется в путешествие по мультивселенной, где встречает других Пауков.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMzI0NmVkMjEtYmY4MS00ZDMxLTlkZmEtMzU4MDQxYTMzMjU2XkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_.jpg",
+        "runtime": "2ч 20мин"
+      },
+      {
+        "id": 6,
+        "title": "Джон Уик 4",
+        "year": 2023,
+        "rating": 8.0,
+        "genre": "Боевик, Триллер",
+        "director": "Чад Стахелски",
+        "actors": "Киану Ривз, Лоренс Фишбёрн",
+        "description": "Джон Уик продолжает борьбу с Правлением Кланов и готовится к решающей битве.",
+        "poster": "https://ir.ozone.ru/s3/multimedia-0/6881606496.jpg",
+        "runtime": "2ч 49мин"
+      },
+      {
+        "id": 7,
+        "title": "Наполеон",
+        "year": 2023,
+        "rating": 6.5,
+        "genre": "Исторический, Боевик",
+        "director": "Ридли Скотт",
+        "actors": "Хоакин Феникс, Ванесса Кирби",
+        "description": "Взлет и падение знаменитого французского императора Наполеона Бонапарта.",
+        "poster": "https://kinogo.online/uploads/posts/2023-11/1701267547-1458431142.jpg",
+        "runtime": "2ч 38мин"
+      },
+      {
+        "id": 8,
+        "title": "Аквамен: Потерянное царство",
+        "year": 2023,
+        "rating": 6.2,
+        "genre": "Фантастика, Боевик",
+        "director": "Джеймс Ван",
+        "actors": "Джейсон Момоа, Патрик Уилсон",
+        "description": "Аквамен объединяется с братом, чтобы остановить Черную Манту.",
+        "poster": "https://avatars.mds.yandex.net/get-kinopoisk-image/10835644/cfad55ef-5b52-4ac8-b276-2ba61768801e/600x900",
+        "runtime": "2ч 4мин"
+      }
+    ]
+  }

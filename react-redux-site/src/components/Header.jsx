@@ -1,40 +1,46 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { toggleTheme } from '../features/ui/uiSlice'
+import { Link, useLocation } from 'react-router-dom'
 import '../styles/header.css'
 
 const Header = () => {
-  const dispatch = useDispatch()
-  const theme = useSelector((state) => state.ui.theme)
-
-  const handleThemeToggle = () => {
-    dispatch(toggleTheme())
-    document.body.className = theme === 'light' ? 'dark-theme' : 'light-theme'
-  }
+  const location = useLocation()
 
   return (
-    <header className={`header ${theme}-theme`}>
+    <header className="header">
       <div className="header-container">
         <div className="logo">
-          <h1>StarCinema</h1>
+          <Link to="/">
+            <h1>🎬 CINEMA<span className="logo-accent">HUB</span></h1>
+          </Link>
         </div>
         
         <nav className="nav-menu">
           <ul>
-            <li><a href="/" className="nav-link active">Главная</a></li>
-            <li><a href="/movies" className="nav-link">Афиша</a></li>
-            <li><a href="/soon" className="nav-link">Скоро в кино</a></li>
-            <li><a href="/cinemas" className="nav-link">Кинотеатры</a></li>
-            <li><a href="/promotions" className="nav-link">Акции</a></li>
-            <li><a href="/contacts" className="nav-link">Контакты</a></li>
+            <li>
+              <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
+                Главная
+              </Link>
+            </li>
+            <li>
+              <Link to="/movies" className="nav-link">Афиша</Link>
+            </li>
+            <li>
+              <Link to="/soon" className="nav-link">Скоро</Link>
+            </li>
+            <li>
+              <Link to="/cinemas" className="nav-link">Кинотеатры</Link>
+            </li>
+            <li>
+              <Link to="/admin" className={`nav-link ${location.pathname === '/admin' ? 'active' : ''}`}>
+                ⚙️ Админка
+              </Link>
+            </li>
           </ul>
         </nav>
 
         <div className="header-actions">
-          <button className="theme-toggle" onClick={handleThemeToggle}>
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
           <button className="login-btn">Войти</button>
+          <button className="register-btn">Регистрация</button>
         </div>
       </div>
     </header>
