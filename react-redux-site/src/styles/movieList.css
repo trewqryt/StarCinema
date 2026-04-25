@@ -291,3 +291,58 @@
     font-size: 2.2rem;
   }
 }
+
+/* Добавь в конец файла */
+
+.movie-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.8rem;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  transition: all 0.3s;
+  color: #cbd5e1;
+}
+
+.action-btn:hover {
+  transform: scale(1.1);
+}
+
+.like-btn.active {
+  color: #ff4757;
+}
+
+.fav-btn.active {
+  color: #ffd700;
+}
+
+.action-count {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.user-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.user-rating-label {
+  color: #94a3b8;
+}
+
+.user-rating-value {
+  color: #ffd700;
+  font-weight: 600;
+}

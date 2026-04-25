@@ -9,7 +9,12 @@ import AdminPage from './pages/AdminPage'
 import Login from './components/Login'
 import Register from './components/Register'
 import ProfilePage from './pages/ProfilePage'
+import FavoritesPage from './pages/FavoritesPage'
 import './styles/theme.css'
+
+
+
+// Добавь в Routes:
 
 function App() {
   useEffect(() => {
@@ -27,6 +32,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
           </Routes>
           <Footer />
         </div>

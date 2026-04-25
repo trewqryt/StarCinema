@@ -327,3 +327,147 @@
     font-size: 1rem;
   }
 }
+
+/* Добавь в конец файла */
+
+.detail-rating-section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.user-avg-rating {
+  background: #334155;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #ffd700;
+}
+
+.detail-actions-top {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.detail-like-btn, .detail-fav-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #334155;
+  border-radius: 20px;
+  background: transparent;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+}
+
+.detail-like-btn.active {
+  border-color: #ff4757;
+  color: #ff4757;
+  background: rgba(255, 71, 87, 0.1);
+}
+
+.detail-fav-btn.active {
+  border-color: #ffd700;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.ratings-section {
+  background: #0f172a;
+  border-radius: 12px;
+  padding: 1rem !important;
+  margin-top: 0.5rem;
+}
+
+.rate-button {
+  background: #334155;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 1rem;
+}
+
+.rate-button:hover {
+  background: #4fc3f7;
+  transform: translateY(-2px);
+}
+
+.rating-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.rating-number {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #334155;
+  background: #1e293b;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.rating-number:hover {
+  background: #4fc3f7;
+  border-color: #4fc3f7;
+  transform: scale(1.1);
+}
+
+.rating-number.selected {
+  background: #ffd700;
+  border-color: #ffd700;
+  color: #000;
+}
+
+.ratings-list {
+  margin-top: 1rem;
+}
+
+.ratings-list h4 {
+  color: #94a3b8;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.ratings-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.rating-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #334155;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.rating-value {
+  color: #ffd700;
+}
+
+.remove-rating {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #f44336;
+  font-size: 0.7rem;
+  transition: transform 0.3s;
+}
+
+.remove-rating:hover {
+  transform: scale(1.2);
+}

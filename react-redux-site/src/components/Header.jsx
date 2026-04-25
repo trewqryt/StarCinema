@@ -38,6 +38,10 @@ const Header = () => {
             <li>
               <Link to="/cinemas" className="nav-link">Кинотеатры</Link>
             </li>
+
+            <li>
+               <Link to="/favorites" className="nav-link">⭐ Избранное</Link>
+              </li>
             {/* Админка видна всем для теста */}
             <li>
               <Link to="/admin" className={`nav-link ${location.pathname === '/admin' ? 'active' : ''}`}>
