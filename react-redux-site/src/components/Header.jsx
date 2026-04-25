@@ -38,13 +38,12 @@ const Header = () => {
             <li>
               <Link to="/cinemas" className="nav-link">Кинотеатры</Link>
             </li>
-            {user?.role === 'admin' && (
-              <li>
-                <Link to="/admin" className={`nav-link ${location.pathname === '/admin' ? 'active' : ''}`}>
-                  ⚙️ Админка
-                </Link>
-              </li>
-            )}
+            {/* Админка видна всем для теста */}
+            <li>
+              <Link to="/admin" className={`nav-link ${location.pathname === '/admin' ? 'active' : ''}`}>
+                🛠️ Админка
+              </Link>
+            </li>
           </ul>
         </nav>
 

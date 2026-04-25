@@ -9,7 +9,6 @@ import AdminPage from './pages/AdminPage'
 import Login from './components/Login'
 import Register from './components/Register'
 import ProfilePage from './pages/ProfilePage'
-import ProtectedRoute from './components/ProtectedRoute'
 import './styles/theme.css'
 
 function App() {
@@ -26,16 +25,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin" element={
-              <ProtectedRoute requireAdmin={true}>
-                <AdminPage />
-              </ProtectedRoute>
-            } />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
           <Footer />
         </div>

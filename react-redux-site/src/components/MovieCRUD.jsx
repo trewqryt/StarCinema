@@ -1,137 +1,296 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { 
-  setMovies, 
-  addMovie, 
-  updateMovie, 
-  deleteMovie,
-  setLoading, 
-  setError 
-} from '../features/movies/movieSlice'
-import MovieForm from './MovieForm'
-import moviesData from '../data/movies.json'
+import { addMovie, updateMovie, deleteMovie, setMovies } from '../features/movies/movieSlice'
 import '../styles/movieCRUD.css'
 
 const MovieCRUD = () => {
   const dispatch = useDispatch()
-  const { movies, loading, error } = useSelector((state) => state.movies)
+  const { movies } = useSelector((state) => state.movies)
   
+  const [formData, setFormData] = useState({
+    id: '',
+    title: '',
+    year: '',
+    rating: '',
+    genre: '',
+    director: '',
+    actors: '',
+    description: '',
+    poster: '',
+    runtime: ''
+  })
+  
+  const [isEditing, setIsEditing] = useState(false)
   const [showForm, setShowForm] = useState(false)
-  const [editingMovie, setEditingMovie] = useState(null)
-  const [deleteConfirm, setDeleteConfirm] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [deleteId, setDeleteId] = useState(null)
 
+  // Загрузка начальных данных
   useEffect(() => {
-    const loadMovies = async () => {
-      try {
-        dispatch(setLoading(true))
-        // Имитация загрузки
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        dispatch(setMovies(moviesData.movies))
-        dispatch(setError(null))
-      } catch (err) {
-        dispatch(setError(err.message))
-      } finally {
-        dispatch(setLoading(false))
-      }
+    const savedMovies = localStorage.getItem('movies')
+    if (savedMovies) {
+      dispatch(setMovies(JSON.parse(savedMovies)))
+    } else {
+      // Начальные данные
+      const initialMovies = [
+        {
+          id: 1,
+          title: "Дюна: Часть вторая",
+          year: 2024,
+          rating: 8.9,
+          genre: "Фантастика, Боевик",
+          director: "Дени Вильнёв",
+          actors: "Тимоти Шаламе, Зендея, Остин Батлер",
+          description: "Пол Атрейдес объединяется с фрименами, чтобы отомстить заговорщикам.",
+          poster: "https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00NTc5LThlOGQtODhmNDI1NmY5YzAwXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg",
+          runtime: "2ч 46мин"
+        },
+        {
+          id: 2,
+          title: "Оппенгеймер",
+          year: 2023,
+          rating: 8.5,
+          genre: "Драма, Биография",
+          director: "Кристофер Нолан",
+          actors: "Киллиан Мёрфи, Эмили Блант, Мэтт Дэймон",
+          description: "История жизни создателя атомной бомбы.",
+          poster: "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg",
+          runtime: "3ч"
+        },
+        {
+          id: 3,
+          title: "Барби",
+          year: 2023,
+          rating: 7.0,
+          genre: "Комедия, Фэнтези",
+          director: "Грета Гервиг",
+          actors: "Марго Робби, Райан Гослинг",
+          description: "Барби отправляется в реальный мир.",
+          poster: "https://m.media-amazon.com/images/M/MV5BNjU3N2QxNzYtMjk1NC00MTc4LTk1NTQtMmUxNTljM2I0NDA5XkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg",
+          runtime: "1ч 54мин"
+        }
+      ]
+      dispatch(setMovies(initialMovies))
+      localStorage.setItem('movies', JSON.stringify(initialMovies))
     }
+  }, [dispatch])
 
-    if (movies.length === 0) {
-      loadMovies()
+  // Сохранение в localStorage при изменении movies
+  useEffect(() => {
+    if (movies.length > 0) {
+      localStorage.setItem('movies', JSON.stringify(movies))
     }
-  }, [dispatch, movies.length])
+  }, [movies])
 
-  // CREATE - добавить фильм
-  const handleAddMovie = (movieData) => {
-    const newMovie = {
-      ...movieData,
-      id: Date.now(), // генерируем уникальный ID
-      rating: parseFloat(movieData.rating) || 0,
-      year: parseInt(movieData.year) || 2024
-    }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const resetForm = () => {
+    setFormData({
+      id: '',
+      title: '',
+      year: '',
+      rating: '',
+      genre: '',
+      director: '',
+      actors: '',
+      description: '',
+      poster: '',
+      runtime: ''
+    })
+    setIsEditing(false)
+    setShowForm(false)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
     
-    dispatch(addMovie(newMovie))
-    setShowForm(false)
-    alert(`✅ Фильм "${newMovie.title}" успешно добавлен!`)
+    if (!formData.title || !formData.genre || !formData.director) {
+      alert('Заполните обязательные поля: Название, Жанр, Режиссер')
+      return
+    }
+
+    if (isEditing) {
+      dispatch(updateMovie(formData))
+      alert('Фильм обновлен!')
+    } else {
+      const newMovie = {
+        ...formData,
+        id: Date.now(),
+        year: parseInt(formData.year) || 2024,
+        rating: parseFloat(formData.rating) || 0
+      }
+      dispatch(addMovie(newMovie))
+      alert('Фильм добавлен!')
+    }
+    resetForm()
   }
 
-  // UPDATE - обновить фильм
-  const handleUpdateMovie = (movieData) => {
-    dispatch(updateMovie(movieData))
-    setEditingMovie(null)
-    setShowForm(false)
-    alert(`✅ Фильм "${movieData.title}" успешно обновлен!`)
-  }
-
-  // DELETE - удалить фильм
-  const handleDeleteMovie = (movieId, movieTitle) => {
-    dispatch(deleteMovie(movieId))
-    setDeleteConfirm(null)
-    alert(`✅ Фильм "${movieTitle}" успешно удален!`)
-  }
-
-  // Открыть форму для добавления
-  const openAddForm = () => {
-    setEditingMovie(null)
+  const handleEdit = (movie) => {
+    setFormData(movie)
+    setIsEditing(true)
     setShowForm(true)
   }
 
-  // Открыть форму для редактирования
-  const openEditForm = (movie) => {
-    setEditingMovie(movie)
-    setShowForm(true)
+  const handleDelete = (id) => {
+    if (window.confirm('Вы уверены, что хотите удалить этот фильм?')) {
+      dispatch(deleteMovie(id))
+      alert('Фильм удален!')
+    }
+    setDeleteId(null)
   }
 
-  // Фильтрация фильмов по поиску
-  const filteredMovies = movies.filter(movie => 
+  const filteredMovies = movies.filter(movie =>
     movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     movie.genre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     movie.director.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  if (loading && movies.length === 0) {
-    return (
-      <div className="crud-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Загрузка фильмов...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="crud-container">
       <div className="crud-header">
-        <h2 className="crud-title">
-          <span className="title-accent">Управление</span> фильмами
-        </h2>
-        <button className="crud-add-button" onClick={openAddForm}>
-          <span className="button-icon">➕</span>
-          Добавить фильм
+        <h2>🎬 Управление фильмами</h2>
+        <button className="btn-add" onClick={() => { resetForm(); setShowForm(true) }}>
+          ➕ Добавить фильм
         </button>
       </div>
 
-      {/* Поиск */}
       <div className="crud-search">
         <input
           type="text"
           placeholder="🔍 Поиск по названию, жанру или режиссеру..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="crud-search-input"
+          className="search-input"
         />
       </div>
 
-      {error && (
-        <div className="crud-error">
-          <p>❌ {error}</p>
-          <button onClick={() => window.location.reload()}>Повторить</button>
+      {showForm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>{isEditing ? '✏️ Редактировать фильм' : '➕ Новый фильм'}</h3>
+              <button className="modal-close" onClick={resetForm}>×</button>
+            </div>
+            <form onSubmit={handleSubmit} className="crud-form">
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Название *</label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Год</label>
+                  <input
+                    type="number"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleChange}
+                    placeholder="2024"
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Рейтинг</label>
+                  <input
+                    type="number"
+                    name="rating"
+                    value={formData.rating}
+                    onChange={handleChange}
+                    step="0.1"
+                    placeholder="0-10"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Длительность</label>
+                  <input
+                    type="text"
+                    name="runtime"
+                    value={formData.runtime}
+                    onChange={handleChange}
+                    placeholder="2ч 30мин"
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Жанр *</label>
+                  <input
+                    type="text"
+                    name="genre"
+                    value={formData.genre}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Режиссер *</label>
+                  <input
+                    type="text"
+                    name="director"
+                    value={formData.director}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Актеры</label>
+                <input
+                  type="text"
+                  name="actors"
+                  value={formData.actors}
+                  onChange={handleChange}
+                  placeholder="Актер 1, Актер 2"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>URL постера</label>
+                <input
+                  type="text"
+                  name="poster"
+                  value={formData.poster}
+                  onChange={handleChange}
+                  placeholder="https://..."
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Описание</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows="3"
+                  placeholder="Описание фильма..."
+                />
+              </div>
+
+              <div className="form-actions">
+                <button type="submit" className="btn-submit">
+                  {isEditing ? '💾 Сохранить' : '➕ Добавить'}
+                </button>
+                <button type="button" className="btn-cancel" onClick={resetForm}>
+                  Отмена
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
-      {/* Таблица фильмов */}
-      <div className="crud-table-container">
+      <div className="crud-table-wrapper">
         <table className="crud-table">
           <thead>
             <tr>
@@ -146,93 +305,42 @@ const MovieCRUD = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredMovies.map((movie) => (
+            {filteredMovies.map(movie => (
               <tr key={movie.id}>
-                <td className="crud-table-poster">
+                <td className="poster-cell">
                   <img 
-                    src={movie.poster} 
+                    src={movie.poster || 'https://via.placeholder.com/50x70?text=🎬'} 
                     alt={movie.title}
-                    onError={(e) => {
-                      e.target.onerror = null
-                      e.target.src = 'https://via.placeholder.com/50x70?text=🎬'
-                    }}
+                    onError={(e) => e.target.src = 'https://via.placeholder.com/50x70?text=🎬'}
                   />
                 </td>
-                <td className="crud-table-title">{movie.title}</td>
+                <td className="title-cell">{movie.title}</td>
                 <td>{movie.year}</td>
-                <td>
-                  <span className="crud-rating">⭐ {movie.rating}</span>
-                </td>
+                <td><span className="rating-badge">⭐ {movie.rating}</span></td>
                 <td>{movie.genre}</td>
                 <td>{movie.director}</td>
                 <td>{movie.runtime}</td>
                 <td>
-                  <div className="crud-actions">
-                    <button 
-                      className="crud-edit-btn"
-                      onClick={() => openEditForm(movie)}
-                      title="Редактировать"
-                    >
-                      ✏️
-                    </button>
-                    <button 
-                      className="crud-delete-btn"
-                      onClick={() => setDeleteConfirm({ id: movie.id, title: movie.title })}
-                      title="Удалить"
-                    >
-                      🗑️
-                    </button>
+                  <div className="action-buttons">
+                    <button className="btn-edit" onClick={() => handleEdit(movie)}>✏️</button>
+                    <button className="btn-delete" onClick={() => handleDelete(movie.id)}>🗑️</button>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
+        
         {filteredMovies.length === 0 && (
-          <div className="crud-empty">
-            <p>😕 Фильмы не найдены</p>
+          <div className="empty-state">
+            😕 Фильмы не найдены
           </div>
         )}
       </div>
-
-      {/* Модальное окно с формой */}
-      {showForm && (
-        <div className="crud-modal-overlay">
-          <div className="crud-modal">
-            <button className="crud-modal-close" onClick={() => setShowForm(false)}>×</button>
-            <MovieForm 
-              movie={editingMovie}
-              onSubmit={editingMovie ? handleUpdateMovie : handleAddMovie}
-              onCancel={() => setShowForm(false)}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Модальное окно подтверждения удаления */}
-      {deleteConfirm && (
-        <div className="crud-modal-overlay">
-          <div className="crud-modal crud-modal-small">
-            <h3>Подтверждение удаления</h3>
-            <p>Вы уверены, что хотите удалить фильм <strong>"{deleteConfirm.title}"</strong>?</p>
-            <div className="crud-confirm-buttons">
-              <button 
-                className="crud-confirm-yes"
-                onClick={() => handleDeleteMovie(deleteConfirm.id, deleteConfirm.title)}
-              >
-                Да, удалить
-              </button>
-              <button 
-                className="crud-confirm-no"
-                onClick={() => setDeleteConfirm(null)}
-              >
-                Отмена
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      
+      <div className="crud-stats">
+        Всего фильмов: <strong>{movies.length}</strong>
+      </div>
     </div>
   )
 }

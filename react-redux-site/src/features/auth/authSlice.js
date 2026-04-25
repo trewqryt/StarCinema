@@ -27,13 +27,39 @@ const validatePassword = (password) => {
   }
 }
 
+// Функция для получения пользователей с админом по умолчанию
+const getInitialUsers = () => {
+  const savedUsers = localStorage.getItem('users')
+  if (savedUsers) {
+    return JSON.parse(savedUsers)
+  }
+  
+  // Создаем админа по умолчанию при первом запуске
+  return [
+    {
+      id: 1,
+      email: 'admin@cinemahub.com',
+      name: 'Администратор',
+      phone: '+7 (999) 123-45-67',
+      password: 'Admin123',
+      role: 'admin',
+      createdAt: new Date().toISOString()
+    }
+  ]
+}
+
 const initialState = {
   user: JSON.parse(localStorage.getItem('currentUser') || 'null'),
   token: localStorage.getItem('token') || null,
   isAuthenticated: !!localStorage.getItem('token'),
   loading: false,
   error: null,
-  users: JSON.parse(localStorage.getItem('users') || '[]')
+  users: getInitialUsers()
+}
+
+// Сохраняем users в localStorage
+const saveUsersToStorage = (users) => {
+  localStorage.setItem('users', JSON.stringify(users))
 }
 
 export const authSlice = createSlice({
@@ -55,14 +81,12 @@ export const authSlice = createSlice({
     registerUser: (state, action) => {
       const { name, email, phone, password } = action.payload
       
-      // Валидация email
       if (!validateEmail(email)) {
         state.error = 'Неверный формат email'
         state.loading = false
         return
       }
       
-      // Валидация пароля
       const passwordValidation = validatePassword(password)
       if (!passwordValidation.isValid) {
         let errorMessage = 'Пароль должен содержать: '
@@ -75,7 +99,6 @@ export const authSlice = createSlice({
         return
       }
       
-      // Проверка существующего пользователя
       const existingUser = state.users.find(u => u.email === email)
       if (existingUser) {
         state.error = 'Пользователь с таким email уже существует'
@@ -83,13 +106,12 @@ export const authSlice = createSlice({
         return
       }
       
-      // Создание нового пользователя
       const newUser = {
         id: Date.now(),
         email,
         name: name || email.split('@')[0],
         phone: phone || '',
-        password: password, // В реальном проекте нужно хэшировать!
+        password: password,
         role: 'user',
         createdAt: new Date().toISOString()
       }
@@ -97,29 +119,26 @@ export const authSlice = createSlice({
       const token = generateToken()
       
       state.users.push(newUser)
+      saveUsersToStorage(state.users)
       state.user = newUser
       state.token = token
       state.isAuthenticated = true
       state.error = null
       state.loading = false
       
-      // Сохраняем в localStorage
       localStorage.setItem('token', token)
-      localStorage.setItem('users', JSON.stringify(state.users))
       localStorage.setItem('currentUser', JSON.stringify(newUser))
     },
     
     loginUser: (state, action) => {
       const { email, password } = action.payload
       
-      // Валидация email
       if (!validateEmail(email)) {
         state.error = 'Неверный формат email'
         state.loading = false
         return
       }
       
-      // Поиск пользователя
       const user = state.users.find(u => u.email === email)
       
       if (!user) {
@@ -128,7 +147,6 @@ export const authSlice = createSlice({
         return
       }
       
-      // Проверка пароля
       if (user.password !== password) {
         state.error = 'Неверный пароль'
         state.loading = false
@@ -161,11 +179,10 @@ export const authSlice = createSlice({
       const updatedUser = { ...state.user, ...action.payload }
       state.user = updatedUser
       
-      // Обновляем в массиве users
       const userIndex = state.users.findIndex(u => u.id === state.user.id)
       if (userIndex !== -1) {
         state.users[userIndex] = updatedUser
-        localStorage.setItem('users', JSON.stringify(state.users))
+        saveUsersToStorage(state.users)
       }
       
       localStorage.setItem('currentUser', JSON.stringify(updatedUser))
