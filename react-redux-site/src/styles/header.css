@@ -137,3 +137,45 @@
     text-align: center;
   }
 }
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.profile-link:hover {
+  background: var(--surface-light);
+}
+
+.profile-avatar-small {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #4fc3f7, #0288d1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+}
+
+.logout-btn-header {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logout-btn-header:hover {
+  background: #da190b;
+  transform: translateY(-2px);
+}

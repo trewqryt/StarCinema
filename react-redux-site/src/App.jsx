@@ -6,6 +6,10 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import AdminPage from './pages/AdminPage'
+import Login from './components/Login'
+import Register from './components/Register'
+import ProfilePage from './pages/ProfilePage'
+import ProtectedRoute from './components/ProtectedRoute'
 import './styles/theme.css'
 
 function App() {
@@ -20,7 +24,18 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminPage />
+              </ProtectedRoute>
+            } />
           </Routes>
           <Footer />
         </div>
