@@ -3,11 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { 
   addRating, 
   removeRating,
-  selectMovieRatings,
-  selectAverageRating,
-  selectRatingsCount,
-  selectMovieLikes,
-  selectIsFavorite,
   toggleLike,
   toggleFavorite
 } from '../features/movies/movieSlice'
@@ -19,11 +14,21 @@ const MovieDetail = ({ movie, onClose }) => {
   const [showRatingButtons, setShowRatingButtons] = useState(false)
   
   // Получаем данные из Redux
-  const ratings = useSelector(state => selectMovieRatings(state, movie.id))
-  const avgRating = useSelector(state => selectAverageRating(state, movie.id))
-  const ratingsCount = useSelector(state => selectRatingsCount(state, movie.id))
-  const isLiked = useSelector(state => selectMovieLikes(state, movie.id))
-  const isFav = useSelector(state => selectIsFavorite(state, movie.id))
+  const ratings = useSelector((state) => state.movies.ratings[movie.id] || [])
+  const likes = useSelector((state) => state.movies.likes)
+  const favorites = useSelector((state) => state.movies.favorites)
+  
+  const isLiked = likes[movie.id] || false
+  const isFav = favorites.includes(movie.id)
+  
+  // Расчет средней оценки
+  const getAverageRating = () => {
+    if (ratings.length === 0) return 0
+    const sum = ratings.reduce((a, b) => a + b, 0)
+    return (sum / ratings.length).toFixed(1)
+  }
+  
+  const avgRating = getAverageRating()
 
   const handleAddRating = (rating) => {
     dispatch(addRating({ movieId: movie.id, rating }))
@@ -43,6 +48,8 @@ const MovieDetail = ({ movie, onClose }) => {
     dispatch(toggleFavorite(movie.id))
   }
 
+  if (!movie) return null
+
   return (
     <div className="movie-detail">
       <button className="close-button" onClick={onClose}>×</button>
@@ -54,7 +61,7 @@ const MovieDetail = ({ movie, onClose }) => {
           className="detail-poster"
           onError={(e) => {
             e.target.onerror = null
-            e.target.src = `https://via.placeholder.com/200x300?text=${movie.title.charAt(0)}`
+            e.target.src = `https://via.placeholder.com/200x300?text=${movie.title?.charAt(0) || '?'}`
           }}
         />
         <div className="detail-title-section">
@@ -66,7 +73,7 @@ const MovieDetail = ({ movie, onClose }) => {
             <span className="detail-rating">⭐ {movie.rating}</span>
             {avgRating > 0 && (
               <span className="user-avg-rating">
-                👥 {ratingsCount} оценок | ⭐ {avgRating}
+                👥 {ratings.length} оценок | ⭐ {avgRating}
               </span>
             )}
           </div>
@@ -92,22 +99,22 @@ const MovieDetail = ({ movie, onClose }) => {
       <div className="detail-info">
         <div className="info-row">
           <span className="info-label">Жанр</span>
-          <span className="info-value">{movie.genre}</span>
+          <span className="info-value">{movie.genre || 'Не указан'}</span>
         </div>
         
         <div className="info-row">
           <span className="info-label">Режиссер</span>
-          <span className="info-value">{movie.director}</span>
+          <span className="info-value">{movie.director || 'Не указан'}</span>
         </div>
         
         <div className="info-row">
           <span className="info-label">В ролях</span>
-          <span className="info-value">{movie.actors}</span>
+          <span className="info-value">{movie.actors || 'Не указаны'}</span>
         </div>
         
         <div className="info-row">
           <span className="info-label">Длительность</span>
-          <span className="info-value">{movie.runtime}</span>
+          <span className="info-value">{movie.runtime || 'Не указана'}</span>
         </div>
 
         {/* Секция оценок пользователей */}
@@ -160,7 +167,7 @@ const MovieDetail = ({ movie, onClose }) => {
 
         <div className="info-row description">
           <span className="info-label">О фильме</span>
-          <p className="info-value">{movie.description}</p>
+          <p className="info-value">{movie.description || 'Описание отсутствует'}</p>
         </div>
       </div>
 
