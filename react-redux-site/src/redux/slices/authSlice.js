@@ -1,11 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { validateCredentials, validateRegistration, checkUserExists, generateToken } from '../middleware/authMiddleware'
+import { validateCredentials, validateRegistration, generateToken } from '../middleware/authMiddleware'
 
+// Функция для получения пользователей с админом по умолчанию
+const getDefaultUsers = () => {
+  const savedUsers = localStorage.getItem('users')
+  if (savedUsers) {
+    return JSON.parse(savedUsers)
+  }
+  
+  // Создаем админа по умолчанию при первом запуске
+  return [
+    {
+      id: 1,
+      name: 'Администратор',
+      email: 'admin@example.com',
+      password: 'Admin123',
+      role: 'admin',
+      createdAt: new Date().toISOString()
+    }
+  ]
+}
+
+// Асинхронный вход
 export const loginUser = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     const validation = validateCredentials(email, password)
-    
     if (!validation.isValid) {
       return rejectWithValue(validation.errors)
     }
@@ -16,29 +36,33 @@ export const loginUser = createAsyncThunk(
         const user = users.find(u => u.email === email)
         
         if (!user) {
-          reject({ general: 'Пользователь с таким email не найден' })
+          reject({ general: 'Пользователь не найден' })
         } else if (user.password !== password) {
           reject({ general: 'Неверный пароль' })
         } else {
           const token = generateToken()
           localStorage.setItem('token', token)
           localStorage.setItem('currentUser', JSON.stringify(user))
-          
-          resolve({
-            user: { id: user.id, name: user.name, email: user.email, role: user.role },
-            token
+          resolve({ 
+            user: { 
+              id: user.id, 
+              name: user.name, 
+              email: user.email, 
+              role: user.role || 'user' 
+            }, 
+            token 
           })
         }
-      }, 1000)
+      }, 800)
     })
   }
 )
 
+// Асинхронная регистрация
 export const registerUser = createAsyncThunk(
   'auth/register',
   async ({ name, email, password, confirmPassword }, { rejectWithValue }) => {
     const validation = validateRegistration(name, email, password, confirmPassword)
-    
     if (!validation.isValid) {
       return rejectWithValue(validation.errors)
     }
@@ -47,17 +71,20 @@ export const registerUser = createAsyncThunk(
       setTimeout(() => {
         const users = JSON.parse(localStorage.getItem('users') || '[]')
         
-        if (checkUserExists(email, users)) {
+        if (users.some(u => u.email === email)) {
           reject({ general: 'Пользователь с таким email уже существует' })
           return
         }
+        
+        // Проверка: если email admin@example.com, то роль admin
+        const isAdmin = email === 'admin@example.com'
         
         const newUser = {
           id: Date.now(),
           name: name.trim(),
           email: email.toLowerCase(),
           password: password,
-          role: 'user',
+          role: isAdmin ? 'admin' : 'user',
           createdAt: new Date().toISOString()
         }
         
@@ -68,37 +95,58 @@ export const registerUser = createAsyncThunk(
         localStorage.setItem('token', token)
         localStorage.setItem('currentUser', JSON.stringify(newUser))
         
-        resolve({
-          user: { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role },
-          token
+        resolve({ 
+          user: { 
+            id: newUser.id, 
+            name: newUser.name, 
+            email: newUser.email, 
+            role: newUser.role 
+          }, 
+          token 
         })
-      }, 1000)
+      }, 800)
     })
   }
 )
 
-export const checkAuth = createAsyncThunk(
-  'auth/check',
-  async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem('token')
-    const user = localStorage.getItem('currentUser')
-    
-    if (!token || !user) {
-      return rejectWithValue(null)
+// Проверка авторизации
+export const checkAuth = createAsyncThunk('auth/check', async () => {
+  const token = localStorage.getItem('token')
+  const user = localStorage.getItem('currentUser')
+  if (token && user) {
+    const parsedUser = JSON.parse(user)
+    return { 
+      user: { 
+        id: parsedUser.id, 
+        name: parsedUser.name, 
+        email: parsedUser.email, 
+        role: parsedUser.role || 'user' 
+      }, 
+      token 
     }
-    
-    return { user: JSON.parse(user), token }
   }
-)
+  return null
+})
 
-const initialState = {
-  user: JSON.parse(localStorage.getItem('currentUser') || 'null'),
-  token: localStorage.getItem('token') || null,
-  isAuthenticated: !!localStorage.getItem('token'),
-  loading: false,
-  error: null,
-  validationErrors: {}
+// Инициализация начального состояния с админом
+const getInitialState = () => {
+  const users = getDefaultUsers()
+  // Сохраняем админа в localStorage если его там нет
+  if (!localStorage.getItem('users')) {
+    localStorage.setItem('users', JSON.stringify(users))
+  }
+  
+  return {
+    user: JSON.parse(localStorage.getItem('currentUser') || 'null'),
+    token: localStorage.getItem('token') || null,
+    isAuthenticated: !!localStorage.getItem('token'),
+    loading: false,
+    error: null,
+    validationErrors: {}
+  }
 }
+
+const initialState = getInitialState()
 
 const authSlice = createSlice({
   name: 'auth',
@@ -120,6 +168,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Login
       .addCase(loginUser.pending, (state) => {
         state.loading = true
         state.error = null
@@ -130,12 +179,14 @@ const authSlice = createSlice({
         state.user = action.payload.user
         state.token = action.payload.token
         state.isAuthenticated = true
+        state.error = null
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload?.general || 'Ошибка входа'
         state.validationErrors = action.payload || {}
       })
+      // Register
       .addCase(registerUser.pending, (state) => {
         state.loading = true
         state.error = null
@@ -146,6 +197,7 @@ const authSlice = createSlice({
         state.user = action.payload.user
         state.token = action.payload.token
         state.isAuthenticated = true
+        state.error = null
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false

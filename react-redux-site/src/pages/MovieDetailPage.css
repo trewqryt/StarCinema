@@ -1,0 +1,323 @@
+.detail-page {
+    padding: 40px 0;
+    min-height: calc(100vh - 300px);
+    margin-top: 80px;
+  }
+  
+  .detail-page .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  
+  /* Back Button */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 8px 20px;
+    color: #a0a0a0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 30px;
+  }
+  
+  .back-btn:hover {
+    background: rgba(233, 69, 96, 0.1);
+    border-color: #e94560;
+    color: #e94560;
+    transform: translateX(-5px);
+  }
+  
+  /* Detail Content */
+  .detail-content {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 50px;
+    background: #16213e;
+    border-radius: 24px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .detail-poster img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+  
+  .detail-info h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fff, #e94560);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Meta Info */
+  .detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 25px 0;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .detail-meta span {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #a0a0a0;
+  }
+  
+  .detail-year, .detail-runtime {
+    color: #a0a0a0;
+  }
+  
+  .detail-rating {
+    color: #ffd700;
+  }
+  
+  .detail-user-rating {
+    color: #e94560;
+  }
+  
+  /* Sections */
+  .detail-section {
+    margin-bottom: 25px;
+  }
+  
+  .detail-section h3 {
+    color: #e94560;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  
+  .detail-section p {
+    line-height: 1.7;
+    color: #c0c0c0;
+    font-size: 0.95rem;
+  }
+  
+  /* Rating Section */
+  .rate-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 8px 24px;
+    color: #a0a0a0;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+  }
+  
+  .rate-btn:hover {
+    background: rgba(233, 69, 96, 0.1);
+    border-color: #e94560;
+    color: #e94560;
+  }
+  
+  .rating-input {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .rating-input input {
+    width: 100px;
+    padding: 10px 15px;
+    background: #0f0f1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .rating-input input:focus {
+    outline: none;
+    border-color: #e94560;
+  }
+  
+  .rating-input button {
+    padding: 10px 20px;
+    background: #e94560;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .rating-input button:hover {
+    background: #c62a47;
+  }
+  
+  .ratings-list {
+    margin-top: 20px;
+  }
+  
+  .ratings-list h4 {
+    color: #a0a0a0;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  
+  .ratings-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .rating-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #ffd700;
+  }
+  
+  .rating-item button {
+    background: none;
+    border: none;
+    color: #808080;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: color 0.3s;
+  }
+  
+  .rating-item button:hover {
+    color: #f44336;
+  }
+  
+  /* Action Buttons */
+  .detail-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .detail-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    padding: 12px 28px;
+    color: #a0a0a0;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .detail-btn svg {
+    transition: all 0.3s;
+  }
+  
+  .detail-btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  .detail-btn.active {
+    background: rgba(233, 69, 96, 0.15);
+    border-color: #e94560;
+    color: #e94560;
+  }
+  
+  .buy-btn {
+    background: #e94560;
+    border-color: #e94560;
+    color: white;
+  }
+  
+  .buy-btn:hover {
+    background: #c62a47;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .detail-content {
+      grid-template-columns: 300px 1fr;
+      gap: 30px;
+    }
+    
+    .detail-info h1 {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .detail-page .container {
+      padding: 0 20px;
+    }
+    
+    .detail-content {
+      grid-template-columns: 1fr;
+      padding: 25px;
+    }
+    
+    .detail-poster {
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    
+    .detail-info h1 {
+      text-align: center;
+      font-size: 1.6rem;
+    }
+    
+    .detail-meta {
+      justify-content: center;
+    }
+    
+    .detail-section {
+      text-align: center;
+    }
+    
+    .detail-actions {
+      justify-content: center;
+    }
+    
+    .ratings-items {
+      justify-content: center;
+    }
+    
+    .back-btn {
+      margin-left: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .detail-actions {
+      flex-direction: column;
+    }
+    
+    .detail-btn {
+      justify-content: center;
+    }
+    
+    .detail-meta span {
+      font-size: 0.75rem;
+    }
+    
+    .rating-input {
+      justify-content: center;
+    }
+  }

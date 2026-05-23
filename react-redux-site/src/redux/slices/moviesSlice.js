@@ -1,143 +1,76 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import moviesData from '../../data/movies.json'
 
-export const fetchMovies = createAsyncThunk(
-  'movies/fetchMovies',
-  async (_, { rejectWithValue }) => {
-    try {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const saved = localStorage.getItem('movies')
-          if (saved) {
-            resolve(JSON.parse(saved))
-          } else {
-            const defaultMovies = [
-              { id: 1, title: "Дюна: Часть вторая", year: 2024, rating: 8.9, genre: "Фантастика", director: "Дени Вильнёв", actors: "Тимоти Шаламе, Зендея", description: "Пол Атрейдес объединяется с фрименами", poster: "https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00NTc5LThlOGQtODhmNDI1NmY5YzAwXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg", runtime: "2ч 46мин" },
-              { id: 2, title: "Оппенгеймер", year: 2023, rating: 8.5, genre: "Драма", director: "Кристофер Нолан", actors: "Киллиан Мёрфи, Эмили Блант", description: "История создателя атомной бомбы", poster: "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg", runtime: "3ч" },
-              { id: 3, title: "Барби", year: 2023, rating: 7.0, genre: "Комедия", director: "Грета Гервиг", actors: "Марго Робби, Райан Гослинг", description: "Барби отправляется в реальный мир", poster: "https://m.media-amazon.com/images/M/MV5BNjU3N2QxNzYtMjk1NC00MTc4LTk1NTQtMmUxNTljM2I0NDA5XkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg", runtime: "1ч 54мин" }
-            ]
-            resolve(defaultMovies)
-          }
-        }, 500)
-      })
-    } catch (error) {
-      return rejectWithValue(error.message)
-    }
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+export const fetchMovies = createAsyncThunk('movies/fetchMovies', async () => {
+  await delay(800)
+  const savedMovies = localStorage.getItem('userMovies')
+  const userMovies = savedMovies ? JSON.parse(savedMovies) : []
+  return [...moviesData.movies, ...userMovies]
+})
+
+export const addMovie = createAsyncThunk('movies/addMovie', async (movieData) => {
+  await delay(500)
+  const newMovie = { ...movieData, id: Date.now() }
+  const savedMovies = localStorage.getItem('userMovies')
+  const userMovies = savedMovies ? JSON.parse(savedMovies) : []
+  userMovies.push(newMovie)
+  localStorage.setItem('userMovies', JSON.stringify(userMovies))
+  return newMovie
+})
+
+export const updateMovie = createAsyncThunk('movies/updateMovie', async ({ id, movieData }) => {
+  await delay(500)
+  const updatedMovie = { ...movieData, id: parseInt(id) }
+  const savedMovies = localStorage.getItem('userMovies')
+  const userMovies = savedMovies ? JSON.parse(savedMovies) : []
+  const index = userMovies.findIndex(m => m.id === parseInt(id))
+  if (index !== -1) {
+    userMovies[index] = updatedMovie
+    localStorage.setItem('userMovies', JSON.stringify(userMovies))
   }
-)
+  return updatedMovie
+})
 
-export const fetchMovieById = createAsyncThunk(
-  'movies/fetchMovieById',
-  async (id, { rejectWithValue }) => {
-    try {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const saved = localStorage.getItem('movies')
-          const movies = saved ? JSON.parse(saved) : []
-          const movie = movies.find(m => m.id === parseInt(id))
-          if (movie) {
-            resolve(movie)
-          } else {
-            reject('Фильм не найден')
-          }
-        }, 300)
-      })
-    } catch (error) {
-      return rejectWithValue(error.message)
-    }
-  }
-)
+export const deleteMovie = createAsyncThunk('movies/deleteMovie', async (id) => {
+  await delay(500)
+  const savedMovies = localStorage.getItem('userMovies')
+  const userMovies = savedMovies ? JSON.parse(savedMovies) : []
+  const filtered = userMovies.filter(m => m.id !== parseInt(id))
+  localStorage.setItem('userMovies', JSON.stringify(filtered))
+  return id
+})
 
-export const createMovie = createAsyncThunk(
-  'movies/createMovie',
-  async (movieData, { rejectWithValue }) => {
-    try {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const saved = localStorage.getItem('movies')
-          const movies = saved ? JSON.parse(saved) : []
-          const newMovie = { ...movieData, id: Date.now() }
-          movies.push(newMovie)
-          localStorage.setItem('movies', JSON.stringify(movies))
-          resolve(newMovie)
-        }, 500)
-      })
-    } catch (error) {
-      return rejectWithValue(error.message)
-    }
-  }
-)
-
-export const updateMovie = createAsyncThunk(
-  'movies/updateMovie',
-  async ({ id, movieData }, { rejectWithValue }) => {
-    try {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const saved = localStorage.getItem('movies')
-          const movies = saved ? JSON.parse(saved) : []
-          const index = movies.findIndex(m => m.id === parseInt(id))
-          if (index !== -1) {
-            movies[index] = { ...movies[index], ...movieData, id: parseInt(id) }
-            localStorage.setItem('movies', JSON.stringify(movies))
-            resolve(movies[index])
-          } else {
-            reject('Фильм не найден')
-          }
-        }, 500)
-      })
-    } catch (error) {
-      return rejectWithValue(error.message)
-    }
-  }
-)
-
-export const deleteMovie = createAsyncThunk(
-  'movies/deleteMovie',
-  async (id, { rejectWithValue }) => {
-    try {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const saved = localStorage.getItem('movies')
-          const movies = saved ? JSON.parse(saved) : []
-          const filtered = movies.filter(m => m.id !== parseInt(id))
-          localStorage.setItem('movies', JSON.stringify(filtered))
-          resolve(id)
-        }, 500)
-      })
-    } catch (error) {
-      return rejectWithValue(error.message)
-    }
-  }
-)
-
-const initialState = {
-  movies: [],
-  currentMovie: null,
-  favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
-  likes: JSON.parse(localStorage.getItem('likes') || '{}'),
-  ratings: JSON.parse(localStorage.getItem('ratings') || '{}'),
-  loading: false,
-  error: null,
-  totalPages: 1,
-  currentPage: 1
+const getInitialMovies = () => {
+  const savedMovies = localStorage.getItem('userMovies')
+  const userMovies = savedMovies ? JSON.parse(savedMovies) : []
+  return [...moviesData.movies, ...userMovies]
 }
 
 const moviesSlice = createSlice({
   name: 'movies',
-  initialState,
+  initialState: {
+    movies: getInitialMovies(),
+    loading: false,
+    error: null,
+    favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+    likes: JSON.parse(localStorage.getItem('likes') || '{}'),
+    ratings: JSON.parse(localStorage.getItem('ratings') || '{}')
+  },
   reducers: {
     toggleFavorite: (state, action) => {
-      const movieId = action.payload
-      if (state.favorites.includes(movieId)) {
-        state.favorites = state.favorites.filter(id => id !== movieId)
+      const id = action.payload
+      if (state.favorites.includes(id)) {
+        state.favorites = state.favorites.filter(favId => favId !== id)
       } else {
-        state.favorites.push(movieId)
+        state.favorites.push(id)
       }
       localStorage.setItem('favorites', JSON.stringify(state.favorites))
     },
     toggleLike: (state, action) => {
-      const movieId = action.payload
-      state.likes[movieId] = !state.likes[movieId]
+      const id = action.payload
+      state.likes[id] = !state.likes[id]
       localStorage.setItem('likes', JSON.stringify(state.likes))
     },
     addRating: (state, action) => {
@@ -154,9 +87,6 @@ const moviesSlice = createSlice({
         state.ratings[movieId].splice(index, 1)
         localStorage.setItem('ratings', JSON.stringify(state.ratings))
       }
-    },
-    clearError: (state) => {
-      state.error = null
     }
   },
   extraReducers: (builder) => {
@@ -171,21 +101,9 @@ const moviesSlice = createSlice({
       })
       .addCase(fetchMovies.rejected, (state, action) => {
         state.loading = false
-        state.error = action.payload
+        state.error = action.error.message
       })
-      .addCase(fetchMovieById.pending, (state) => {
-        state.loading = true
-        state.error = null
-      })
-      .addCase(fetchMovieById.fulfilled, (state, action) => {
-        state.loading = false
-        state.currentMovie = action.payload
-      })
-      .addCase(fetchMovieById.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
-      })
-      .addCase(createMovie.fulfilled, (state, action) => {
+      .addCase(addMovie.fulfilled, (state, action) => {
         state.movies.push(action.payload)
       })
       .addCase(updateMovie.fulfilled, (state, action) => {
@@ -193,18 +111,12 @@ const moviesSlice = createSlice({
         if (index !== -1) {
           state.movies[index] = action.payload
         }
-        if (state.currentMovie?.id === action.payload.id) {
-          state.currentMovie = action.payload
-        }
       })
       .addCase(deleteMovie.fulfilled, (state, action) => {
         state.movies = state.movies.filter(m => m.id !== action.payload)
-        if (state.currentMovie?.id === action.payload) {
-          state.currentMovie = null
-        }
       })
   }
 })
 
-export const { toggleFavorite, toggleLike, addRating, removeRating, clearError } = moviesSlice.actions
+export const { toggleFavorite, toggleLike, addRating, removeRating } = moviesSlice.actions
 export default moviesSlice.reducer

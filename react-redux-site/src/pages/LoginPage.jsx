@@ -1,74 +1,94 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginUser, clearError } from '../redux/slices/authSlice'
+import { loginUser } from '../redux/slices/authSlice'
+import './LoginPage.css'
 
 const LoginPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { loading, error, validationErrors, isAuthenticated } = useSelector((state) => state.auth)
-  
-  const [formData, setFormData] = useState({ email: '', password: '' })
+  const { loading, error } = useSelector(state => state.auth)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
-  useEffect(() => {
-    if (isAuthenticated) navigate('/')
-  }, [isAuthenticated, navigate])
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    dispatch(loginUser(formData))
+    const result = await dispatch(loginUser({ email, password }))
+    if (result.payload?.user) {
+      navigate('/')
+    }
   }
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-    if (error) dispatch(clearError())
+  const fillDemo = () => {
+    setEmail('demo@example.com')
+    setPassword('Demo123')
   }
 
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h2>🔐 Вход в аккаунт</h2>
-        <p>Добро пожаловать обратно!</p>
+        <h2>Welcome back</h2>
+        <p>Sign in to your account</p>
         
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <input type="email" name="email" placeholder="Email" value={formData.email}
-              onChange={handleChange} className={validationErrors.email ? 'error' : ''} required />
-            {validationErrors.email && <span className="field-error">{validationErrors.email}</span>}
+        <form onSubmit={handleSubmit}>
+          <input 
+            type="email" 
+            placeholder="Email address" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
+          
+          <div style={{ position: 'relative' }}>
+            <input 
+              type={showPassword ? 'text' : 'password'} 
+              placeholder="Password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+            />
+            <button 
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: '15px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                color: '#a0a0a0',
+                cursor: 'pointer',
+                fontSize: '14px',
+                padding: 0,
+                margin: 0,
+                width: 'auto'
+              }}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </button>
           </div>
           
-          <div className="form-group">
-            <div className="password-input">
-              <input type={showPassword ? 'text' : 'password'} name="password" placeholder="Пароль"
-                value={formData.password} onChange={handleChange}
-                className={validationErrors.password ? 'error' : ''} required />
-              <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? '🙈' : '👁️'}
-              </button>
-            </div>
-            {validationErrors.password && <span className="field-error">{validationErrors.password}</span>}
-          </div>
+          {error && <div className="auth-error">{error}</div>}
           
-          {error && <div className="error-message">⚠️ {error}</div>}
-          
-          <button type="submit" className="auth-btn" disabled={loading}>
-            {loading ? 'Загрузка...' : 'Войти'}
+          <button type="submit" disabled={loading}>
+            {loading ? 'Loading...' : 'Sign In'}
           </button>
         </form>
         
         <div className="auth-footer">
-          <p>Нет аккаунта? <Link to="/register">Зарегистрироваться</Link></p>
+          <p>Don't have an account? <Link to="/register">Sign Up</Link></p>
         </div>
-        
-        <div className="auth-demo">
-          <p>📝 Демо-аккаунт:</p>
+
+        <div className="demo-account">
+          <p>🎬 Demo Account</p>
           <div className="demo-credentials">
-            <code>Email: demo@example.com</code>
-            <code>Пароль: Demo123!</code>
+            <code>demo@example.com</code>
+            <code>Demo123</code>
           </div>
-          <button className="demo-btn" onClick={() => setFormData({ email: 'demo@example.com', password: 'Demo123!' })}>
-            Заполнить демо-данные
+          <button type="button" className="demo-btn" onClick={fillDemo}>
+            Fill demo credentials
           </button>
         </div>
       </div>

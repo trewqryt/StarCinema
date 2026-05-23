@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './slices/authSlice'
 import moviesReducer from './slices/moviesSlice'
 import uiReducer from './slices/uiSlice'
+import authReducer from './slices/authSlice'
 import { authMiddleware } from './middleware/authMiddleware'
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
     movies: moviesReducer,
-    ui: uiReducer
+    ui: uiReducer,
+    auth: authReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

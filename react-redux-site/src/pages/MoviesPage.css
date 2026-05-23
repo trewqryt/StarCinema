@@ -1,0 +1,15 @@
+.movies-page {
+    padding: 40px 0;
+  }
+  
+  .movies-page .page-header h1 {
+    font-size: 2rem;
+    color: #e94560;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .movies-page .page-header p {
+    text-align: center;
+    color: #a0a0a0;
+  }

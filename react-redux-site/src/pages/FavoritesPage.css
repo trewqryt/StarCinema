@@ -1,0 +1,107 @@
+.favorites-page {
+    min-height: calc(100vh - 300px);
+    padding: 40px 0;
+    margin-top: 80px;
+  }
+  
+  .favorites-page .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  
+  .favorites-page .page-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .favorites-page .page-header h1 {
+    font-size: 2.5rem;
+    color: #e94560;
+    margin-bottom: 10px;
+  }
+  
+  .favorites-page .page-header p {
+    color: #a0a0a0;
+    font-size: 1rem;
+  }
+  
+  /* Empty State */
+  .empty-favorites {
+    text-align: center;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, #16213e, #0f0f1a);
+    border-radius: 24px;
+    margin: 40px auto;
+    max-width: 500px;
+  }
+  
+  .empty-icon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+  
+  .empty-favorites h3 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .empty-favorites p {
+    color: #a0a0a0;
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+  }
+  
+  .empty-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #e94560, #c62a47);
+    color: white;
+    text-decoration: none;
+    padding: 12px 32px;
+    border-radius: 40px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .empty-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
+  }
+  
+  /* Movies Grid */
+  .favorites-page .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .favorites-page {
+      padding: 20px 0;
+    }
+    
+    .favorites-page .container {
+      padding: 0 20px;
+    }
+    
+    .favorites-page .page-header h1 {
+      font-size: 1.8rem;
+    }
+    
+    .empty-favorites {
+      padding: 50px 20px;
+      margin: 20px;
+    }
+    
+    .empty-favorites h3 {
+      font-size: 1.2rem;
+    }
+    
+    .empty-icon {
+      font-size: 4rem;
+    }
+  }

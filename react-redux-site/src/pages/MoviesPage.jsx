@@ -7,8 +7,8 @@ import LoadingSpinner from '../components/LoadingSpinner'
 
 const MoviesPage = () => {
   const dispatch = useDispatch()
-  const { movies, loading, error } = useSelector((state) => state.movies)
-  const { searchQuery, filterGenre, sortBy } = useSelector((state) => state.ui)
+  const { movies, loading, error } = useSelector(state => state.movies)
+  const { searchQuery, filterGenre, sortBy } = useSelector(state => state.ui)
 
   useEffect(() => {
     if (movies.length === 0) {
@@ -19,64 +19,48 @@ const MoviesPage = () => {
   const genres = ['all', ...new Set(movies.map(m => m.genre))]
 
   let filteredMovies = movies.filter(movie => {
-    const matchesSearch = movie.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         movie.genre.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesSearch = movie.title.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesGenre = filterGenre === 'all' || movie.genre === filterGenre
     return matchesSearch && matchesGenre
   })
 
   filteredMovies = [...filteredMovies].sort((a, b) => {
-    if (sortBy === 'rating') return b.rating - a.rating
+    if (sortBy === 'rating') return parseFloat(b.rating) - parseFloat(a.rating)
     if (sortBy === 'year') return b.year - a.year
     if (sortBy === 'title') return a.title.localeCompare(b.title)
     return 0
   })
 
-  if (loading && movies.length === 0) return <LoadingSpinner />
-  if (error) return <div className="error-state">❌ {error}</div>
+  if (loading) return <LoadingSpinner />
+  if (error) return <div className="error-state">❌ Ошибка: {error}</div>
 
   return (
     <div className="movies-page">
       <div className="container">
         <div className="page-header">
           <h1>Все фильмы</h1>
-          <p>{filteredMovies.length} фильмов найдено</p>
+          <p>Найдено: {filteredMovies.length} фильмов</p>
         </div>
 
-        <div className="filters-bar">
-          <div className="filter-group">
-            <label>Жанр:</label>
-            <select 
-              value={filterGenre} 
-              onChange={(e) => dispatch(setFilterGenre(e.target.value))}
-              className="filter-select"
-            >
-              {genres.map(genre => (
-                <option key={genre} value={genre}>
-                  {genre === 'all' ? 'Все' : genre}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="filters">
+          <select value={filterGenre} onChange={(e) => dispatch(setFilterGenre(e.target.value))}>
+            {genres.map(genre => (
+              <option key={genre} value={genre}>
+                {genre === 'all' ? 'Все жанры' : genre}
+              </option>
+            ))}
+          </select>
 
-          <div className="filter-group">
-            <label>Сортировать по:</label>
-            <select 
-              value={sortBy} 
-              onChange={(e) => dispatch(setSortBy(e.target.value))}
-              className="filter-select"
-            >
-              <option value="rating">Рейтинг</option>
-              <option value="year">Год</option>
-              <option value="title">Название</option>
-            </select>
-          </div>
+          <select value={sortBy} onChange={(e) => dispatch(setSortBy(e.target.value))}>
+            <option value="rating">По рейтингу</option>
+            <option value="year">По году</option>
+            <option value="title">По названию</option>
+          </select>
         </div>
 
         {filteredMovies.length === 0 ? (
           <div className="empty-state">
             <p>😕 Фильмы не найдены</p>
-            <button onClick={() => window.location.reload()}>Попробовать снова</button>
           </div>
         ) : (
           <div className="movies-grid">
